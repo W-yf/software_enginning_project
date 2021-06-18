@@ -16,6 +16,7 @@ class TablespiderPipeline:
         self.availability_devices: list = ['主板', '显卡', '内存', 'CPU', '硬盘', '机箱', '光驱', '显示器', '鼠标', '键盘']
 
     def process_item(self, item, spider):
+        item = {i.replace('.', '-'):j for i, j in item.items()} # Mongodb 不支持 "."
         if (spices := item.get('种类')) in self.availability_devices:
             my_col = self.my_db[spices]
             if my_col.find({'名称': item.get('名称')}).count():
