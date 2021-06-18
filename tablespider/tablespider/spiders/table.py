@@ -44,6 +44,9 @@ class TableSpider(scrapy.Spider):
         dic['名称'] = name[:-2]
         dic['价格'] = price[1:]
         dic['种类'] = response.meta['name']
+        dic['评分'] = response.xpath(
+            "/html/body/div[@class='wrapper  clearfix']/div[@class='side']/div[@class='goods-card']/div[@class='goods-card__score clearfix']/span[@class='score']/text()").get()
+        
         while table := response.xpath(f'//table[{count}]').get():
             table = pd.read_html(table)[0].T
             table.columns = table.iloc[0, :]
